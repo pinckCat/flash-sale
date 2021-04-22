@@ -1,6 +1,6 @@
 var kafka = require('kafka-node'),
     Consumer = kafka.Consumer,
-    kafkaClient = new kafka.KafkaClient('kafka');
+    kafkaClient = new kafka.KafkaClient('zookeeper:2181');
 
 var async = require('async');
 
@@ -34,7 +34,7 @@ var q = async.queue(function (message, callback) {
     });
 }, 2);
 
-function flashConsummer() {
+function flashConsumer() {
     //获取数据库数据量，避免插入重复数据
     connection.query("SELECT MAX(id) AS offset from orders", function (errors, results, fields) {
         if (results[0].offset != null) {
@@ -42,7 +42,7 @@ function flashConsummer() {
         }
     });
 
-    let consummer = new Consumer(
+    let consumer = new Consumer(
         kafkaClient,
         [
             {topic: 'FLASH_ORDER', partition: 0, offset: messageOffset}
@@ -53,15 +53,15 @@ function flashConsummer() {
         }
     );
 
-    consummer.on('message', function (message) {
+    consumer.on('message', function (message) {
         if (message) {
             q.push(message);
         }
     });
 
-    consummer.on("error", function (message) {
+    consumer.on("error", function (message) {
         console.log(message);
     });
 };
 
-exports.flashConsummer = flashConsummer;
+exports.flashConsumer = flashConsumer;

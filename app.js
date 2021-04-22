@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var flashRouter = require('./routes/flash-sale');
+var flashConsumer = require('./routes/flash-sale-consumer';)
 
 var app = express();
 
@@ -39,5 +40,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+//消费者，接收秒杀订单数据
+flashConsumer.flashConsumer();
 
 module.exports = app;
