@@ -5,7 +5,7 @@ var redis = require("redis");
 
 var kafka = require("kafka-node"),
     Producer = kafka.Producer,
-    kafkaClient = new kafka.KafkaClient({kafkaHost: 'host'}),
+    kafkaClient = new kafka.KafkaClient({kafkaHost: 'kafka'}),
     producer = new Producer(kafkaClient);
 
 const redisClient = redis.createClient(6379, "redis");
