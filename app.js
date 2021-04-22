@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var flashRouter = require('./routes/flash-sale');
-var flashConsumer = require('./routes/flash-sale-consumer';)
+var flashConsumer = require('./routes/flash-sale-consumer');
 
 var app = express();
 
