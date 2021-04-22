@@ -6,6 +6,7 @@ services:
       - "8081:8081"
   redis:
     image: "redis:alpine"
+    ports: "6379:6379"
   mysql:
     image: debezium/example-mysql:1.1
     ports:

@@ -1,21 +1,30 @@
 var express = require('express');
 var router = express.Router();
 
-var redis = require("redis");
+const redis = require("redis");
 
 var kafka = require("kafka-node"),
     Producer = kafka.Producer,
-    kafkaClient = new kafka.KafkaClient({kafkaHost: 'zookeeper:2181'}),
+    kafkaClient = new kafka.KafkaClient({kafkaHost: '81.70.204.243:2181'}),
     producer = new Producer(kafkaClient);
 
-const redisClient = redis.createClient(6379, "redis");
+const redisClient = redis.createClient(6379, "81.70.204.243");
+
+redisClient.on("ready", function (data) {
+    console.log(data);
+})
+
+redisClient.on("error", function (error) {
+    console.error(error);
+    throw error;
+})
 
 router.post("/flashSale", function (req, res) {
     redisClient.multi().get('inStock').decr('inStock').execAsync().then(function (err, replies) {
         if (err) {
             console.error(err);
             redisClient.end(true);
-            return;
+            throw err;
         } else {
             if (replies[1] >= 0) {
                 let payload = [{
@@ -27,7 +36,6 @@ router.post("/flashSale", function (req, res) {
                     if (err) {
                         console.error(err);
                         throw err;
-                        return;
                     }
                     console.log(data);
                     console.log('购买成功，还是剩'+replies[1]+'个');
