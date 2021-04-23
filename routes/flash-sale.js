@@ -5,7 +5,7 @@ const redis = require("redis");
 
 var kafka = require("kafka-node"),
     Producer = kafka.Producer,
-    kafkaClient = new kafka.KafkaClient({kafkaHost: '81.70.204.243:2181'}),
+    kafkaClient = new kafka.KafkaClient({kafkaHost: '81.70.204.243:9092'}),
     producer = new Producer(kafkaClient);
 
 const redisClient = redis.createClient(6379, "81.70.204.243");
@@ -19,7 +19,7 @@ redisClient.on("error", function (error) {
     throw error;
 })
 
-router.post("/flashSale", function (req, res) {
+router.post("/", function (req, res) {
     redisClient.multi().get('inStock').decr('inStock').execAsync().then(function (err, replies) {
         if (err) {
             console.error(err);

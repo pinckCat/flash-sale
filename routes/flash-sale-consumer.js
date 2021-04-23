@@ -1,6 +1,6 @@
 var kafka = require('kafka-node'),
     Consumer = kafka.Consumer,
-    kafkaClient = new kafka.KafkaClient('81.70.204.243:2181');
+    kafkaClient = new kafka.KafkaClient('81.70.204.243:9092');
 
 var async = require('async');
 
