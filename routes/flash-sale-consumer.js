@@ -43,7 +43,6 @@ var q = async.queue(function (message, callback) {
 
 function flashConsumer() {
     mysqlPool.getConnection(function (err, conn) {
-        if (err) throw err;
         //获取数据库已存入的数据量，避免获取重复数据
         conn.query("SELECT MAX(id) AS offset from orders", function (errors, results, fields) {
             conn.release();
@@ -59,7 +58,6 @@ function flashConsumer() {
 
     //查询缓存的库存值，没有对应的key或者值小于等于0，则初始化一个值
     redisClient.get("inStock", function (err, res) {
-        console.log(err);
         if (res === null || res <= 0) {
             redisClient.set("inStock", inStock, function (err, res) {
                 if (err) throw err;
