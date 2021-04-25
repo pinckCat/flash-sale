@@ -6,7 +6,6 @@ var async = require('async');
 
 var mysql = require('mysql'),
     mysqlPool = mysql.createPool({
-        connectionLimit : 10,
         host: '81.70.204.243',
         user: 'root',
         password: '123456',
@@ -43,6 +42,7 @@ var q = async.queue(function (message, callback) {
 
 function flashConsumer() {
     mysqlPool.getConnection(function (err, conn) {
+        if (err) throw err;
         //获取数据库已存入的数据量，避免获取重复数据
         conn.query("SELECT MAX(id) AS offset from orders", function (errors, results, fields) {
             conn.release();
