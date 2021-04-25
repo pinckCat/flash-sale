@@ -6,6 +6,7 @@ var async = require('async');
 
 var mysql = require('mysql'),
     mysqlPool = mysql.createPool({
+        connectionLimit : 10,
         host: '81.70.204.243',
         user: 'root',
         password: '123456',
@@ -58,7 +59,7 @@ function flashConsumer() {
 
     //查询缓存的库存值，没有对应的key或者值小于等于0，则初始化一个值
     redisClient.get("inStock", function (err, res) {
-        if (err) throw err;
+        console.log(err);
         if (res === null || res <= 0) {
             redisClient.set("inStock", inStock, function (err, res) {
                 if (err) throw err;
@@ -82,16 +83,16 @@ function flashConsumer() {
     );
 
     consumer.on('error', function (err) {
-        // 如果是topic未创建报错，先创建主题
+        // 如果是topic未创建报错，先创建主题(理论上在docker-compose中有设置自动创建topic)
         if (err.toString().split(":")[0] === "TopicsNotExistError") {
             kafkaClient.createTopics([{
                 topic: 'flash-order',
                 partitions: 1,
-                replicationFactor: 2
+                replicationFactor: 1
             }], (error, result) => {
                 if (error) console.log(error);
             })
-        }
+        };
     })
 
     consumer.on('message', function (message) {
