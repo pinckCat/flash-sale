@@ -33,7 +33,6 @@ var q = async.queue(function (message, callback) {
         }, function (error, results, fields) {
             conn.release();
             if (error) {
-                console.error(error);
                 throw error;
             }
             callback();
@@ -68,12 +67,13 @@ function flashConsumer() {
                 console.log("初始化库存值成功！库存为： "+ inStock);
             });
         };
-    })
+    });
+
 
     let consumer = new Consumer(
         kafkaClient,
         [
-            {topic: 'FLASH_ORDER', partition: 0, offset: messageOffset}
+            {topic: 'flash-order', partition: 0, offset: messageOffset}
         ],
         {
             autoCommit: false,
@@ -82,7 +82,16 @@ function flashConsumer() {
     );
 
     consumer.on('error', function (err) {
-        throw err;
+        // 如果是topic未创建报错，先创建主题
+        if (err.toString().split(":")[0] === "TopicsNotExistError") {
+            kafkaClient.createTopics([{
+                topic: 'flash-order',
+                partitions: 1,
+                replicationFactor: 2
+            }], (error, result) => {
+                if (error) console.log(error);
+            })
+        }
     })
 
     consumer.on('message', function (message) {

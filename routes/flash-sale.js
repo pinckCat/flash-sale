@@ -32,7 +32,7 @@ router.post("/", function (req, res) {
             } else {
                 if (replies[0] >= 0) {
                     let payload = [{
-                        topic: 'FLASH_ORDER',
+                        topic: 'flash-order',
                         messages: JSON.stringify({"user_id": 1, "address_id": 1, "product_name": '买个锤子', "product_price": 9.9, "status": 0}),
                         partition: 0
                     }];
