@@ -16,6 +16,10 @@ services:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_USER=mysqluser
       - MYSQL_PASSWORD=mysqlpw
+      - TZ=Asia/Shanghai
+    volumes:
+    - docker_config/my.cnf:/etc/mysql/my.cnf
+    - docker_config/*.sql:/docker-entrypoint-initdb.d/
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
