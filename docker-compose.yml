@@ -18,8 +18,8 @@ services:
       - MYSQL_PASSWORD=mysqlpw
       - TZ=Asia/Shanghai
     volumes:
-    - docker_config/my.cnf:/etc/mysql/my.cnf
-    - docker_config/*.sql:/docker-entrypoint-initdb.d/
+    - ./docker_config:/etc/mysql/conf.d
+    - ./docker_config:/docker-entrypoint-initdb.d/
   zookeeper:
     image: wurstmeister/zookeeper:latest
     ports:
