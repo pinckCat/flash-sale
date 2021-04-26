@@ -72,7 +72,8 @@ function handleMysqlDisconnect(type, orderInfo='') {
                                   partitions: 1,
                                   replicationFactor: 1
                               }], (error, result) => {
-                                  if (error) console.error("创建主题失败！");
+                                  if (error) console.error("topic创建失败！");
+                                  else console.log("topic创建成功！");
                               })
                           };
                       });
@@ -96,7 +97,6 @@ function handleMysqlDisconnect(type, orderInfo='') {
               }, function (error, results, fields) {
                   conn.release();
                   if (error) throw error;
-                  console.log(results);
               });
           }
           return;

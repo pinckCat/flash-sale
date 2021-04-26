@@ -32,6 +32,5 @@ services:
       - KAFKA_ADVERTISED_HOST_NAME=81.70.204.243
       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_CREATE_TOPICS="flash-order:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
