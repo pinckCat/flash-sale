@@ -42,9 +42,7 @@ router.post("/", function (req, res) {
                             partition: 0
                         }];
                         producer.send(payload, function (err, data) {
-                            if (err) {
-                                console.error(err);
-                            }
+                            if (err) console.error(err);
                             console.log('购买成功，还是剩'+replies[0]+'个');
                         });
                     } else {
