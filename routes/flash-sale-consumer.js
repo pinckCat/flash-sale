@@ -98,7 +98,24 @@ function flashConsumer() {
             q.push(message);
         }
     });
-
 };
+
+
+process.on("exit", (code) => {
+    console.log("exit");
+    //程序终止，关闭redis以及mysql连接
+    mysqlPool.end();
+    redisClient.end(true);
+});
+
+process.on("SIGINT", (code) => {
+    console.log("process interrupted by manual");
+    process.exit(0);
+});
+
+process.on("SIGTERM", (code) => {
+    // exit on linux
+    process.exit(0);
+});
 
 exports.flashConsumer = flashConsumer;

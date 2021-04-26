@@ -14,7 +14,6 @@ kafkaClient.on('error', function (err) {
     console.error(err);
 })
 
-
 redisClient.on("error", function (error) {
     console.error(error);
     throw error;
