@@ -2,7 +2,7 @@
 
 this is a node test demo to simulate high-concurrency shopping scenarios used redis、kafka and mysql, all the program look like this:
 
-[![](/public/img/framework.png "framework")]
+![](/public/img/framework.png "framework")
 
 # how to use:
 ```
