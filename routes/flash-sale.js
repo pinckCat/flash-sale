@@ -19,13 +19,19 @@ redisClient.on("error", function (error) {
 });
 
 let redisReady = false;
+let producerReady = false;
 
 redisClient.on("ready", function (reply) {
     redisReady = true;
 });
 
+producer.on("ready", function (reply) {
+    producerReady = true;
+})
+
 router.post("/", function (req, res) {
-    if (redisReady) {
+    // redis 和 kafka producer都ready了才处理请求
+    if (redisReady && producerReady) {
         redisClient
             .multi()
             .decr("inStock")
@@ -52,7 +58,7 @@ router.post("/", function (req, res) {
             });
         res.send('respond with a resource');
     } else {
-        res.send('not ready, please try again later');
+        res.send('redis or kafka not ready, please try again later');
     }
 });
 
